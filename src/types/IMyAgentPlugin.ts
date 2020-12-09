@@ -1,4 +1,9 @@
-import { IPluginMethodMap, IAgentContext, IIdentityManager, IResolver} from 'daf-core'
+import {
+  IPluginMethodMap,
+  IAgentContext,
+  IIdentityManager,
+  IResolver,
+} from 'daf-core'
 
 /**
  * Plugin context
@@ -11,7 +16,6 @@ export type IContext = IAgentContext<IResolver & IIdentityManager>
  * @beta
  */
 export interface IMyAgentPluginFooArgs {
-
   /**
    * Decentralized identifier
    */
@@ -35,12 +39,9 @@ export interface IMyAgentPluginFooArgs {
 export interface IMyAgentPlugin extends IPluginMethodMap {
   /**
    * Method description
-   * 
+   *
    * @param args - Input parameters
    * @param context - Context
    */
-  myPluginFoo(
-    args: IMyAgentPluginFooArgs,
-    context: IContext,
-  ): Promise<string>
+  walletConnect(args: IMyAgentPluginFooArgs, context: IContext): Promise<string>
 }

@@ -15,33 +15,23 @@ export type IContext = IAgentContext<IResolver & IIdentityManager>
  * Arguments needed for myPluginFoo
  * @beta
  */
-export interface IMyAgentPluginFooArgs {
-  /**
-   * Decentralized identifier
-   */
-  did: string
-
-  /**
-   * Lorem ipsum
-   */
-  bar: string
-
-  /**
-   * Dolorem
-   */
-  foo: string
+export interface IWalletConnectOnSessionInit {
+  callback: (event: any) => void
 }
 
 /**
  * My Agent Plugin description
  * @beta
  */
-export interface IMyAgentPlugin extends IPluginMethodMap {
+export interface IWalletConnectPlugin extends IPluginMethodMap {
   /**
    * Method description
    *
    * @param args - Input parameters
    * @param context - Context
    */
-  walletConnect(args: IMyAgentPluginFooArgs, context: IContext): Promise<string>
+  onWalletConnectSessionInit(
+    args: IWalletConnectOnSessionInit,
+    context: IContext,
+  ): Promise<void>
 }

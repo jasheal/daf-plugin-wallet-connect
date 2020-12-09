@@ -1,7 +1,7 @@
 import { Agent, IAgentPlugin } from 'daf-core'
 import {
-  IMyAgentPlugin,
-  IMyAgentPluginFooArgs,
+  IWalletConnectPlugin,
+  IWalletConnectOnSessionInit,
   IContext,
 } from '../types/IMyAgentPlugin'
 import { schema } from '../index'
@@ -12,39 +12,24 @@ import EVENTS from '../lib/events'
  * {@inheritDoc IMyAgentPlugin}
  * @beta
  */
-export class MyAgentPlugin implements IAgentPlugin {
+export class WalletConnector implements IAgentPlugin {
   readonly schema = schema.IMyAgentPlugin
 
   readonly eventTypes = ['validatedMessage']
 
-  readonly methods: IMyAgentPlugin = {
-    walletConnect: this.walletConnect.bind(this),
-    // onWalletConnectInit: this.onWalletConnectInit.bind(this)
-
-    /**
-    
-    onWalletConnectConnect
-
-    **/
+  readonly methods: IWalletConnectPlugin = {
+    onWalletConnectSessionInit: this.onWalletConnectSessionInit.bind(this),
   }
 
   public async onEvent(event: { type: string; data: any }, context: IContext) {
     console.log(event.data)
   }
 
-  // private onWalletConnectInit(callback:(peerId:string, peerMeta:any, payload:any) => any) {
-  //   EventHub.addListener(EVENTS.SESSION_REQUEST_AGENT, ({peerId, peerMeta, payload}) => {
-  //     callback(peerId, peerMeta, payload)
-  //   })
-  // }
-
-  /** {@inheritDoc IMyAgentPlugin.myPluginFoo} */
-  private async walletConnect(
-    args: IMyAgentPluginFooArgs,
+  private async onWalletConnectSessionInit(
+    args: IWalletConnectOnSessionInit,
     context: IContext,
-  ): Promise<string> {
-    const didDoc = await context.agent.resolveDid({ didUrl: args.did })
-    console.log(didDoc)
-    return args.bar
+  ): Promise<void> {
+    EventHub.addListener(EVENTS.SESSION_REQUEST_AGENT, args.callback)
+    console.log(context)
   }
 }
